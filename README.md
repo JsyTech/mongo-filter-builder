@@ -33,8 +33,8 @@ func main() {
   
   // condtions are in AND mode as default, you can use Or() to compose more condtions.
   andFilter := builder.New().
-  						 WantStr("name").Eq("volinda").
-						   WantStr("capName").Eq("VOLINDA").Build()
+  WantStr("name").Eq("volinda").
+  WantStr("capName").Eq("VOLINDA").Build()
   
   
   // the same as in bson:
@@ -43,10 +43,10 @@ func main() {
   //   {name: "phile"}
   // ]
   orFilter := builder.New().
-  						 WantStr("name").Eq("volinda").
-						   WantStr("capName").Eq("VOLINDA").
-  						 Or().
-						   WantStr("name").Eq("phile").Build()
+  WantStr("name").Eq("volinda").
+  WantStr("capName").Eq("VOLINDA").
+  Or().
+  WantStr("name").Eq("phile").Build()
 }
 
 ```
