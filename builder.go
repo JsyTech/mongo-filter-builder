@@ -24,7 +24,7 @@ const (
 
 // Builder represents a filter builder.
 type Builder struct {
-	// condMaps stores all condtions' map.
+	// condMaps stores all condtion maps.
 	condMaps []bson.M
 	// curMap represents the currently operated condtion map.
 	// A condtion map can be a single element map also can be a multiple elements map.
