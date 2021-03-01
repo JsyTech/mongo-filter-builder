@@ -115,7 +115,7 @@ func TestBuilderStr(t *testing.T) {
 	mustEqual(t, MultiCondFilter, caze2)
 }
 
-func TestOr(t *testing.T) {
+func TestStrOr(t *testing.T) {
 	setup()
 	defer tearDown()
 
@@ -135,7 +135,7 @@ func TestOr(t *testing.T) {
 	mustEqual(t, f, caze)
 }
 
-func TestRegex(t *testing.T) {
+func TestStrRegex(t *testing.T) {
 	setup()
 	defer tearDown()
 	f := builder.New().WantStr("name").Like("a").Build()
