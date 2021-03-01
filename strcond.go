@@ -38,7 +38,7 @@ func (strc *strCond) Eq(val string) *Builder {
 }
 
 // Ne adds `$ne: val` to the strc.m
-func (strc *strCond) Ne(val interface{}) *Builder {
+func (strc *strCond) Ne(val string) *Builder {
 	strc.m[_ne] = val
 	strc.addMapToBuilder()
 	return strc.builder
@@ -79,14 +79,14 @@ func (strc *strCond) NotWithOpt(exp string, opt string) *Builder {
 }
 
 // In adds `$in: vals` to the strc.m
-func (strc *strCond) In(vals []string) *Builder {
+func (strc *strCond) In(vals ...string) *Builder {
 	strc.m[_in] = vals
 	strc.addMapToBuilder()
 	return strc.builder
 }
 
 // In adds `$nin: vals` to the strc.m
-func (strc *strCond) Nin(vals []string) *Builder {
+func (strc *strCond) Nin(vals ...string) *Builder {
 	strc.m[_nin] = vals
 	strc.addMapToBuilder()
 	return strc.builder
