@@ -15,53 +15,61 @@ type cond struct {
 	builder *Builder
 }
 
-// addMapToBuilder adds c.m to the referenced builder's map with key as c.key.
-func (c *cond) addMapToBuilder() {
-	c.builder.curMap[c.key] = c.m
+func NewCond(key string, builder *Builder) *cond {
+	return &cond{
+		key:     key,
+		m:       bson.M{},
+		builder: builder,
+	}
 }
 
-// eq adds `$eq: val` to the c.m
-func (c *cond) eq(val interface{}) {
-	c.m[_eq] = val
-	c.addMapToBuilder()
+// addMapToBuilder adds baseCond.m to the referenced builder's map with key as baseCond.key.
+func (baseCond *cond) addMapToBuilder() {
+	baseCond.builder.curMap[baseCond.key] = baseCond.m
 }
 
-// ne adds `$ne: val` to the c.m
-func (c *cond) ne(val interface{}) {
-	c.m[_ne] = val
-	c.addMapToBuilder()
+// eq adds `$eq: val` to the baseCond.m
+func (baseCond *cond) eq(val interface{}) {
+	baseCond.m[_eq] = val
+	baseCond.addMapToBuilder()
 }
 
-// regex adds `$regex: exp, $options: ""` to the c.m
-func (c *cond) regex(exp string) {
-	c.regexWithOpt(exp, "")
+// ne adds `$ne: val` to the baseCond.m
+func (baseCond *cond) ne(val interface{}) {
+	baseCond.m[_ne] = val
+	baseCond.addMapToBuilder()
 }
 
-// regexWithOpt adds `$regex: exp, $options: opt` to the c.m
-func (c *cond) regexWithOpt(exp string, opt string) {
-	c.m[_regex] = primitive.Regex{Pattern: exp, Options: opt}
-	c.addMapToBuilder()
+// regex adds `$regex: exp, $options: ""` to the baseCond.m
+func (baseCond *cond) regex(exp string) {
+	baseCond.regexWithOpt(exp, "")
 }
 
-// not adds `$not: exp, $options: ""` to the c.m
-func (c *cond) not(exp string) {
-	c.notWithOpt(exp, "")
+// regexWithOpt adds `$regex: exp, $options: opt` to the baseCond.m
+func (baseCond *cond) regexWithOpt(exp string, opt string) {
+	baseCond.m[_regex] = primitive.Regex{Pattern: exp, Options: opt}
+	baseCond.addMapToBuilder()
 }
 
-// notWithOpt adds `$not: exp, $options: opt` to the c.m
-func (c *cond) notWithOpt(exp string, opt string) {
-	c.m[_not] = primitive.Regex{Pattern: exp, Options: opt}
-	c.addMapToBuilder()
+// not adds `$not: exp, $options: ""` to the baseCond.m
+func (baseCond *cond) not(exp string) {
+	baseCond.notWithOpt(exp, "")
 }
 
-// in adds `$in: vals` to the c.m
-func (c *cond) in(vals interface{}) {
-	c.m[_in] = vals
-	c.addMapToBuilder()
+// notWithOpt adds `$not: exp, $options: opt` to the baseCond.m
+func (baseCond *cond) notWithOpt(exp string, opt string) {
+	baseCond.m[_not] = primitive.Regex{Pattern: exp, Options: opt}
+	baseCond.addMapToBuilder()
 }
 
-// nin adds `$nin: vals` to the c.m
-func (c *cond) nin(vals interface{}) {
-	c.m[_nin] = vals
-	c.addMapToBuilder()
+// in adds `$in: vals` to the baseCond.m
+func (baseCond *cond) in(vals interface{}) {
+	baseCond.m[_in] = vals
+	baseCond.addMapToBuilder()
+}
+
+// nin adds `$nin: vals` to the baseCond.m
+func (baseCond *cond) nin(vals interface{}) {
+	baseCond.m[_nin] = vals
+	baseCond.addMapToBuilder()
 }
