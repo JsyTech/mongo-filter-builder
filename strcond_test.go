@@ -93,7 +93,7 @@ func TestBuilderStr(t *testing.T) {
 	setup()
 	defer tearDown()
 	b := builder.New()
-	singleCondFilter := b.WantStr("name").Eq("a").Build()
+	singleCondFilter := b.Str("name").Eq("a").Build()
 	caze := bson.M{
 		"name": bson.M{
 			"$eq": "a",
@@ -104,8 +104,8 @@ func TestBuilderStr(t *testing.T) {
 	b2 := builder.New()
 
 	MultiCondFilter := b2.
-		WantStr("name").Eq("a").
-		WantStr("capName").Eq("B").Build()
+		Str("name").Eq("a").
+		Str("capName").Eq("B").Build()
 
 	caze2 := bson.M{
 		"name":    bson.M{"$eq": "a"},
@@ -121,9 +121,9 @@ func TestStrOr(t *testing.T) {
 
 	b := builder.New()
 
-	f := b.WantStr("name").Eq("a").
+	f := b.Str("name").Eq("a").
 		Or().
-		WantStr("name").Eq("b").Build()
+		Str("name").Eq("b").Build()
 
 	caze := bson.M{
 		"$or": []bson.M{
@@ -138,14 +138,14 @@ func TestStrOr(t *testing.T) {
 func TestStrRegex(t *testing.T) {
 	setup()
 	defer tearDown()
-	f := builder.New().WantStr("name").Like("a").Build()
+	f := builder.New().Str("name").Like("a").Build()
 
 	caze := bson.M{
 		"name": bson.M{"$regex": "a"},
 	}
 	mustEqual(t, f, caze)
 
-	f = builder.New().WantStr("name").NotLike("a").Build()
+	f = builder.New().Str("name").NotLike("a").Build()
 	caze = bson.M{
 		"name": bson.M{"$not": primitive.Regex{Pattern: "a"}},
 	}

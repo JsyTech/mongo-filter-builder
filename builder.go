@@ -41,12 +41,12 @@ func New() *Builder {
 }
 
 // WantNum indicates the builder to build a condtion for string type.
-func (b *Builder) WantStr(key string) *strCond {
+func (b *Builder) Str(key string) *strCond {
 	return newStrCond(key, b)
 }
 
-// WantNum indicates the builder to build a condtion for number type.
-func (b *Builder) WantNum(key string) interface{} {
+// Num indicates the builder to build a condtion for number type.
+func (b *Builder) Num(key string) interface{} {
 
 	return nil
 }
