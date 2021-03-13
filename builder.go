@@ -47,8 +47,7 @@ func (b *Builder) Str(key string) *strCond {
 
 // Num indicates the builder to build a condtion for number type.
 func (b *Builder) Num(key string) interface{} {
-
-	return nil
+	return newNumCond(key, b)
 }
 
 // Build builds final filter and returns it.

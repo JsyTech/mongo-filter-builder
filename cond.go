@@ -24,8 +24,21 @@ func NewCond(key string, builder *Builder) *cond {
 }
 
 // addMapToBuilder adds baseCond.m to the referenced builder's map with key as baseCond.key.
+// If the same key is set again, it will try to merge two map.
 func (baseCond *cond) addMapToBuilder() {
-	baseCond.builder.curMap[baseCond.key] = baseCond.m
+	var v interface{}
+	var ok bool
+
+	if v, ok = baseCond.builder.curMap[baseCond.key]; !ok {
+		baseCond.builder.curMap[baseCond.key] = baseCond.m
+		return
+	}
+
+	preMap := v.(map[string]interface{})
+
+	for k, v := range baseCond.m {
+		preMap[k] = v
+	}
 }
 
 // eq adds `$eq: val` to the baseCond.m
@@ -37,6 +50,30 @@ func (baseCond *cond) eq(val interface{}) {
 // ne adds `$ne: val` to the baseCond.m
 func (baseCond *cond) ne(val interface{}) {
 	baseCond.m[_ne] = val
+	baseCond.addMapToBuilder()
+}
+
+// lt adds `$lt: val` to the baseCond.m
+func (baseCond *cond) lt(val interface{}) {
+	baseCond.m[_lt] = val
+	baseCond.addMapToBuilder()
+}
+
+// lte adds `$lte: val` to the baseCond.m
+func (baseCond *cond) lte(val interface{}) {
+	baseCond.m[_lte] = val
+	baseCond.addMapToBuilder()
+}
+
+// gt adds `$gt: val` to the baseCond.m
+func (baseCond *cond) gt(val interface{}) {
+	baseCond.m[_gt] = val
+	baseCond.addMapToBuilder()
+}
+
+// gte adds `$gte: val` to the baseCond.m
+func (baseCond *cond) gte(val interface{}) {
+	baseCond.m[_gte] = val
 	baseCond.addMapToBuilder()
 }
 
