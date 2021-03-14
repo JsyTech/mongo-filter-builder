@@ -46,8 +46,12 @@ func (b *Builder) Str(key string) *strCond {
 }
 
 // Num indicates the builder to build a condtion for number type.
-func (b *Builder) Num(key string) interface{} {
+func (b *Builder) Num(key string) *numCond {
 	return newNumCond(key, b)
+}
+
+func (b *Builder) Date(key string, defaultFormat ...string) *dateCond {
+	return newDateCond(key, b, defaultFormat...)
 }
 
 // Build builds final filter and returns it.
