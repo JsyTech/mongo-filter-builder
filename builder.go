@@ -40,6 +40,13 @@ func New() *Builder {
 	}
 }
 
+// Flush restes the builder to initial state
+func (b *Builder) Flush() *Builder {
+	b.condMaps = []bson.M{}
+	b.curMap = bson.M{}
+	return b
+}
+
 // WantNum indicates the builder to build a condtion for string type.
 func (b *Builder) Str(key string) *strCond {
 	return newStrCond(key, b)
@@ -55,6 +62,7 @@ func (b *Builder) Date(key string, defaultFormat ...string) *dateCond {
 }
 
 // Build builds final filter and returns it.
+// Build usually should be only called once since it will call b.Flush() after build up the final map.
 func (b *Builder) Build() bson.M {
 	if len(b.curMap) != 0 {
 		b.condMaps = append(b.condMaps, b.curMap)
@@ -63,7 +71,9 @@ func (b *Builder) Build() bson.M {
 
 		return bson.M{_or: b.condMaps}
 	}
-	return b.curMap
+	res := b.curMap
+	b.Flush()
+	return res
 }
 
 // Or appends b.curMap to b.condMaps, and b.curMap will be assigned to a new empty map.
