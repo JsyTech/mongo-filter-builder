@@ -1,9 +1,5 @@
 package builder
 
-import (
-	"go.mongodb.org/mongo-driver/bson"
-)
-
 // strCond represents a string-type condition builder.
 type strCond struct {
 	*cond
@@ -12,11 +8,7 @@ type strCond struct {
 // newStrCond constructs a new strCond.
 func newStrCond(key string, builderRef *Builder) *strCond {
 	return &strCond{
-		cond: &cond{
-			key:     key,
-			m:       bson.M{},
-			builder: builderRef,
-		},
+		cond: newCond(key, builderRef),
 	}
 }
 

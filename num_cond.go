@@ -9,7 +9,7 @@ type numCond struct {
 
 func newNumCond(key string, builder *Builder) *numCond {
 	return &numCond{
-		cond: NewCond(key, builder),
+		cond: newCond(key, builder),
 	}
 }
 

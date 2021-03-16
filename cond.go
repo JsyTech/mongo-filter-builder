@@ -15,7 +15,7 @@ type cond struct {
 	builder *Builder
 }
 
-func NewCond(key string, builder *Builder) *cond {
+func newCond(key string, builder *Builder) *cond {
 	return &cond{
 		key:     key,
 		m:       bson.M{},

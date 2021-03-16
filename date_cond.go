@@ -19,7 +19,7 @@ func newDateCond(key string, builder *Builder, format ...string) *dateCond {
 		defaultFormat = format[0]
 	}
 	return &dateCond{
-		cond:          NewCond(key, builder),
+		cond:          newCond(key, builder),
 		defaultFormat: defaultFormat,
 	}
 }
