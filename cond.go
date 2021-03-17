@@ -33,8 +33,7 @@ func (baseCond *cond) addMapToBuilder() {
 		baseCond.builder.curMap[baseCond.key] = baseCond.m
 		return
 	}
-
-	preMap := v.(map[string]interface{})
+	preMap := v.(bson.M)
 
 	for k, v := range baseCond.m {
 		preMap[k] = v
