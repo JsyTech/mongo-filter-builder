@@ -55,3 +55,9 @@ func (c *numCond) Between(min interface{}, max interface{}) *Builder {
 	c.cond.lte(max)
 	return c.builder
 }
+
+// In adds `$nin: vals` to the c.m
+func (c *numCond) In(nums ...interface{}) *Builder {
+	c.cond.in(nums)
+	return c.builder
+}
