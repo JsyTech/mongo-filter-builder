@@ -3,7 +3,7 @@
 ## Installation
 
 ``` go
-go get github.com/tarupo/mongo-filter-builder
+go get github.com/LegeTech/mongo-filter-builder
 ```
 
 ## Usage
