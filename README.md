@@ -12,7 +12,7 @@ Here shows a simple usage for query a struct with specific filed and value. More
 
 ```go
 import (
-	builder "github.com/tarupo/mongo-filter-builder"
+	builder "github.com/LegeTech/mongo-filter-builder"
 )
 
 // Suppose we have a struct looks like this.
