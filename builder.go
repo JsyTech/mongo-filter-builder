@@ -65,6 +65,11 @@ func (b *Builder) Oid(oid string) *oidCond {
 	return newOidCond(b)
 }
 
+// Any constructs a condition without type restricted.
+func (b *Builder) Any(key string) *cond {
+	return newCond(key, b)
+}
+
 // Build builds final filter and returns it.
 // Build usually should be only called once since it will call b.Flush() after build up the final map.
 func (b *Builder) Build() bson.M {
@@ -88,5 +93,11 @@ func (b *Builder) Or() *Builder {
 	}
 	b.condMaps = append(b.condMaps, b.curMap)
 	b.curMap = bson.M{}
+	return b
+}
+
+// AnyMap will set the given map to current condition.
+func (b *Builder) AnyMap(key string, m bson.M) *Builder {
+	b.curMap[key] = m
 	return b
 }

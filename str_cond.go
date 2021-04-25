@@ -14,25 +14,25 @@ func newStrCond(key string, builderRef *Builder) *strCond {
 
 // Eq adds `$eq: val` to the strc.m
 func (strc *strCond) Eq(val string) *Builder {
-	strc.cond.eq(val)
+	strc.cond.Eq(val)
 	return strc.builder
 }
 
 // Ne adds `$ne: val` to the strc.m
 func (strc *strCond) Ne(val string) *Builder {
-	strc.cond.ne(val)
+	strc.cond.Ne(val)
 	return strc.builder
 }
 
 // Regex adds `$regex: exp, $options: ""` to the strc.m
 func (strc *strCond) Regex(exp string) *Builder {
-	strc.cond.regex(exp)
+	strc.cond.Regex(exp)
 	return strc.builder
 }
 
 // RegexWithOpt adds `$regex: exp, $options: opt` to the strc.m
 func (strc *strCond) RegexWithOpt(exp string, opt string) *Builder {
-	strc.cond.regexWithOpt(exp, opt)
+	strc.cond.RegexWithOpt(exp, opt)
 	return strc.builder
 }
 
@@ -48,24 +48,24 @@ func (strc *strCond) NotLike(val string) *Builder {
 
 // Not adds `$not: exp, $options: ""` to the strc.m
 func (strc *strCond) Not(exp string) *Builder {
-	strc.not(exp)
+	strc.cond.Not(exp)
 	return strc.builder
 }
 
 // NotWithOpt adds `$not: exp, $options: opt` to the strc.m
 func (strc *strCond) NotWithOpt(exp string, opt string) *Builder {
-	strc.cond.notWithOpt(exp, opt)
+	strc.cond.NotWithOpt(exp, opt)
 	return strc.builder
 }
 
 // In adds `$in: vals` to the strc.m
 func (strc *strCond) In(vals ...string) *Builder {
-	strc.cond.in(vals)
+	strc.cond.In(vals)
 	return strc.builder
 }
 
 // In adds `$nin: vals` to the strc.m
 func (strc *strCond) Nin(vals ...string) *Builder {
-	strc.nin(vals)
+	strc.cond.Nin(vals)
 	return strc.builder
 }

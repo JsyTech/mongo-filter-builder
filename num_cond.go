@@ -15,25 +15,25 @@ func newNumCond(key string, builder *Builder) *numCond {
 
 // Eq adds `$eq: val` to the c.m
 func (c *numCond) Eq(val interface{}) *Builder {
-	c.cond.eq(val)
+	c.cond.Eq(val)
 	return c.builder
 }
 
 // Ne adds `$ne: val` to the c.m
 func (c *numCond) Ne(val interface{}) *Builder {
-	c.cond.ne(val)
+	c.cond.Ne(val)
 	return c.builder
 }
 
 // Lt adds `$lt: val` to the c.m
 func (c *numCond) Lt(val interface{}) *Builder {
-	c.cond.lt(val)
+	c.cond.Lt(val)
 	return c.builder
 }
 
 // Lte adds `$lte: val` to the c.m
 func (c *numCond) Lte(val interface{}) *Builder {
-	c.cond.lte(val)
+	c.cond.Lte(val)
 	return c.builder
 }
 
@@ -45,19 +45,19 @@ func (c *numCond) Gt(val interface{}) *Builder {
 
 // Gte adds `$gte: val` to the c.m
 func (c *numCond) Gte(val interface{}) *Builder {
-	c.cond.gte(val)
+	c.cond.Gte(val)
 	return c.builder
 }
 
 // Between => [min, max]
 func (c *numCond) Between(min interface{}, max interface{}) *Builder {
-	c.cond.gte(min)
-	c.cond.lte(max)
+	c.cond.Gte(min)
+	c.cond.Lte(max)
 	return c.builder
 }
 
 // In adds `$nin: vals` to the c.m
 func (c *numCond) In(nums interface{}) *Builder {
-	c.cond.in(nums)
+	c.cond.In(nums)
 	return c.builder
 }

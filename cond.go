@@ -40,26 +40,26 @@ func (baseCond *cond) addMapToBuilder() {
 	}
 }
 
-// eq adds `$eq: val` to the baseCond.m
-func (baseCond *cond) eq(val interface{}) {
+// Eq adds `$Eq: val` to the baseCond.m
+func (baseCond *cond) Eq(val interface{}) {
 	baseCond.m[_eq] = val
 	baseCond.addMapToBuilder()
 }
 
-// ne adds `$ne: val` to the baseCond.m
-func (baseCond *cond) ne(val interface{}) {
+// Ne adds `$Ne: val` to the baseCond.m
+func (baseCond *cond) Ne(val interface{}) {
 	baseCond.m[_ne] = val
 	baseCond.addMapToBuilder()
 }
 
-// lt adds `$lt: val` to the baseCond.m
-func (baseCond *cond) lt(val interface{}) {
+// Lt adds `$Lt: val` to the baseCond.m
+func (baseCond *cond) Lt(val interface{}) {
 	baseCond.m[_lt] = val
 	baseCond.addMapToBuilder()
 }
 
-// lte adds `$lte: val` to the baseCond.m
-func (baseCond *cond) lte(val interface{}) {
+// Lte adds `$Lte: val` to the baseCond.m
+func (baseCond *cond) Lte(val interface{}) {
 	baseCond.m[_lte] = val
 	baseCond.addMapToBuilder()
 }
@@ -70,42 +70,42 @@ func (baseCond *cond) gt(val interface{}) {
 	baseCond.addMapToBuilder()
 }
 
-// gte adds `$gte: val` to the baseCond.m
-func (baseCond *cond) gte(val interface{}) {
+// Gte adds `$Gte: val` to the baseCond.m
+func (baseCond *cond) Gte(val interface{}) {
 	baseCond.m[_gte] = val
 	baseCond.addMapToBuilder()
 }
 
-// regex adds `$regex: exp, $options: ""` to the baseCond.m
-func (baseCond *cond) regex(exp string) {
-	baseCond.regexWithOpt(exp, "")
+// Regex adds `$Regex: exp, $options: ""` to the baseCond.m
+func (baseCond *cond) Regex(exp string) {
+	baseCond.RegexWithOpt(exp, "")
 }
 
-// regexWithOpt adds `$regex: exp, $options: opt` to the baseCond.m
-func (baseCond *cond) regexWithOpt(exp string, opt string) {
+// RegexWithOpt adds `$regex: exp, $options: opt` to the baseCond.m
+func (baseCond *cond) RegexWithOpt(exp string, opt string) {
 	baseCond.m[_regex] = primitive.Regex{Pattern: exp, Options: opt}
 	baseCond.addMapToBuilder()
 }
 
-// not adds `$not: exp, $options: ""` to the baseCond.m
-func (baseCond *cond) not(exp string) {
-	baseCond.notWithOpt(exp, "")
+// Not adds `$not: exp, $options: ""` to the baseCond.m
+func (baseCond *cond) Not(exp string) {
+	baseCond.NotWithOpt(exp, "")
 }
 
-// notWithOpt adds `$not: exp, $options: opt` to the baseCond.m
-func (baseCond *cond) notWithOpt(exp string, opt string) {
+// NotWithOpt adds `$not: exp, $options: opt` to the baseCond.m
+func (baseCond *cond) NotWithOpt(exp string, opt string) {
 	baseCond.m[_not] = primitive.Regex{Pattern: exp, Options: opt}
 	baseCond.addMapToBuilder()
 }
 
-// in adds `$in: vals` to the baseCond.m
-func (baseCond *cond) in(vals interface{}) {
+// In adds `$In: vals` to the baseCond.m
+func (baseCond *cond) In(vals interface{}) {
 	baseCond.m[_in] = vals
 	baseCond.addMapToBuilder()
 }
 
-// nin adds `$nin: vals` to the baseCond.m
-func (baseCond *cond) nin(vals interface{}) {
+// Nin adds `$Nin: vals` to the baseCond.m
+func (baseCond *cond) Nin(vals interface{}) {
 	baseCond.m[_nin] = vals
 	baseCond.addMapToBuilder()
 }
