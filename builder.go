@@ -61,7 +61,7 @@ func (b *Builder) Date(key string, defaultFormat ...string) *dateCond {
 	return newDateCond(key, b, defaultFormat...)
 }
 
-func (b *Builder) Oid(oid string) *oidCond {
+func (b *Builder) Oid() *oidCond {
 	return newOidCond(b)
 }
 
