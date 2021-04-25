@@ -61,6 +61,10 @@ func (b *Builder) Date(key string, defaultFormat ...string) *dateCond {
 	return newDateCond(key, b, defaultFormat...)
 }
 
+func (b *Builder) Oid(oid string) *oidCond {
+	return newOidCond(b)
+}
+
 // Build builds final filter and returns it.
 // Build usually should be only called once since it will call b.Flush() after build up the final map.
 func (b *Builder) Build() bson.M {
