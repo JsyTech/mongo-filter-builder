@@ -25,8 +25,7 @@ func newDateCond(key string, builder *Builder, format ...string) *dateCond {
 }
 
 func (c *dateCond) Eq(val time.Time) *Builder {
-	c.cond.Eq(val)
-	return c.builder
+	return c.cond.Eq(val)
 }
 
 func (c *dateCond) EqStr(val string, format ...string) *Builder {
@@ -35,8 +34,7 @@ func (c *dateCond) EqStr(val string, format ...string) *Builder {
 }
 
 func (c *dateCond) Ne(val time.Time) *Builder {
-	c.cond.Ne(val)
-	return c.builder
+	return c.cond.Ne(val)
 }
 
 func (c *dateCond) NeStr(val string, format ...string) *Builder {
@@ -45,8 +43,7 @@ func (c *dateCond) NeStr(val string, format ...string) *Builder {
 }
 
 func (c *dateCond) Lt(val time.Time) *Builder {
-	c.cond.Lt(val)
-	return c.builder
+	return c.cond.Lt(val)
 }
 
 func (c *dateCond) LtStr(val string, format ...string) *Builder {
@@ -55,8 +52,7 @@ func (c *dateCond) LtStr(val string, format ...string) *Builder {
 }
 
 func (c *dateCond) Lte(val time.Time) *Builder {
-	c.cond.Lte(val)
-	return c.builder
+	return c.cond.Lte(val)
 }
 
 func (c *dateCond) LteStr(val string, format ...string) *Builder {
@@ -65,8 +61,7 @@ func (c *dateCond) LteStr(val string, format ...string) *Builder {
 }
 
 func (c *dateCond) Gt(val time.Time) *Builder {
-	c.cond.gt(val)
-	return c.builder
+	return c.cond.gt(val)
 }
 
 func (c *dateCond) GtStr(val string, format ...string) *Builder {
@@ -75,8 +70,7 @@ func (c *dateCond) GtStr(val string, format ...string) *Builder {
 }
 
 func (c *dateCond) Gte(val time.Time) *Builder {
-	c.cond.Gte(val)
-	return c.builder
+	return c.cond.Gte(val)
 }
 
 func (c *dateCond) GteStr(val string, format ...string) *Builder {
@@ -86,8 +80,7 @@ func (c *dateCond) GteStr(val string, format ...string) *Builder {
 
 func (c *dateCond) Between(min, max time.Time) *Builder {
 	c.cond.Gte(min)
-	c.cond.Lte(max)
-	return c.builder
+	return c.cond.Lte(max)
 }
 
 func (c *dateCond) BetweenStr(min, max string, format ...string) *Builder {
