@@ -18,6 +18,5 @@ func (c *oidCond) Eq(oid string) *Builder {
 	if err != nil {
 		panic(err)
 	}
-	c.cond.Eq(id)
-	return c.builder
+	return c.cond.Eq(id)
 }

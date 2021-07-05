@@ -71,7 +71,7 @@ func (b *Builder) Any(key string) *cond {
 }
 
 // Build builds final filter and returns it.
-// Build usually should be only called once since it will call b.Flush() after build up the final map.
+// Build usually should be only called once for every build since it will call b.Flush() after build up the final map.
 func (b *Builder) Build() bson.M {
 	if len(b.curMap) != 0 {
 		b.condMaps = append(b.condMaps, b.curMap)
