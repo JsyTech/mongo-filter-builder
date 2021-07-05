@@ -1,4 +1,4 @@
-# Filter Builder For Mongo Go Driver
+# Filter Builder For MongoDB Go Driver
 
 ## Installation
 
@@ -24,7 +24,7 @@ type CustomStruct struct {
 
 func main() {
   // To build a simple filter
-  filter := builder.New().WantStr("name").Eq("volinda").Build()
+  filter := builder.New().Str("name").Eq("volinda").Build()
   
   ...
   // use the filter in mongo-go-driver's method
@@ -33,8 +33,8 @@ func main() {
   
   // condtions are in AND mode as default, you can use Or() to compose more condtions.
   andFilter := builder.New().
-  WantStr("name").Eq("volinda").
-  WantStr("capName").Eq("VOLINDA").Build()
+  Str("name").Eq("volinda").
+  Str("capName").Eq("VOLINDA").Build()
   
   
   // the same as in bson:
@@ -43,10 +43,10 @@ func main() {
   //   {name: "phile"}
   // ]
   orFilter := builder.New().
-  WantStr("name").Eq("volinda").
-  WantStr("capName").Eq("VOLINDA").
+  Str("name").Eq("volinda").
+  Str("capName").Eq("VOLINDA").
   Or().
-  WantStr("name").Eq("phile").Build()
+  Str("name").Eq("phile").Build()
 }
 
 ```
