@@ -7,9 +7,9 @@ type oidCond struct {
 	*cond
 }
 
-func newOidCond(builderRef *Builder) *oidCond {
+func newOidCond(key string, builderRef *Builder) *oidCond {
 	return &oidCond{
-		cond: newCond("_id", builderRef),
+		cond: newCond(key, builderRef),
 	}
 }
 

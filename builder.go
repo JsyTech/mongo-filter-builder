@@ -61,8 +61,12 @@ func (b *Builder) Date(key string, defaultFormat ...string) *dateCond {
 	return newDateCond(key, b, defaultFormat...)
 }
 
-func (b *Builder) Oid() *oidCond {
-	return newOidCond(b)
+// Oid key will use _id as default
+func (b *Builder) Oid(key ...string) *oidCond {
+	if len(key) != 0 {
+		return newOidCond(key[0], b)
+	}
+	return newOidCond("_id", b)
 }
 
 // Any constructs a condition without type restricted.
