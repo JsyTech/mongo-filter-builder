@@ -14,7 +14,7 @@ const (
 	_lte = "$lte"
 
 	_in  = "$in"
-	_nin = "nin"
+	_nin = "$nin"
 
 	_regex = "$regex"
 	_not   = "$not"
