@@ -3,7 +3,7 @@
 ## Installation
 
 ``` go
-go get github.com/LegeTech/mongo-filter-builder
+go get github.com/JsyTech/mongo-filter-builder
 ```
 
 ## Usage
@@ -12,7 +12,7 @@ Here shows a simple usage for query a struct with specific filed and value. More
 
 ```go
 import (
-	builder "github.com/LegeTech/mongo-filter-builder"
+	builder "github.com/JsyTech/mongo-filter-builder"
 )
 
 // Suppose we have a struct looks like this.

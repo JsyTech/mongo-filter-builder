@@ -3,7 +3,7 @@ package builder_test
 import (
 	"testing"
 
-	builder "github.com/LegeTech/mongo-filter-builder"
+	builder "github.com/JsyTech/mongo-filter-builder"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )

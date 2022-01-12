@@ -1,4 +1,4 @@
-module github.com/LegeTech/mongo-filter-builder
+module github.com/JsyTech/mongo-filter-builder
 
 go 1.15
 
