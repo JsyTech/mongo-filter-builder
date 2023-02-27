@@ -50,6 +50,6 @@ func (c *numCond) Between(min interface{}, max interface{}) *Builder {
 }
 
 // In adds `$nin: vals` to the c.m
-func (c *numCond) In(nums ...int) *Builder {
+func (c *numCond) In(nums interface{}) *Builder {
 	return c.cond.In(nums)
 }

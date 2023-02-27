@@ -114,7 +114,7 @@ func TestBuilder_AutoWithKey(t *testing.T) {
 	assert.Equal(t, c, b)
 
 	b = builder.New().AutoWithKey("test_key", []int{1, 2, 3}).Build()
-	c = builder.New().Num("test_key").In(1, 2, 3).Build()
+	c = builder.New().Num("test_key").In([]int{1, 2, 3}).Build()
 	assert.Equal(t, c, b)
 
 	b = builder.New().AutoWithKey("test_key", []int{}).Build()
@@ -154,6 +154,6 @@ func TestBuilder_Auto(t *testing.T) {
 	assert.Equal(t, c, b)
 
 	b = builder.New().Auto(Query{FooBar: []int{1, 2, 3}, Bar: struct{ NameBar string }{"21312412"}}).Build()
-	c = builder.New().Num("foo_bar").In(1, 2, 3).Build()
+	c = builder.New().Num("foo_bar").In([]int{1, 2, 3}).Build()
 	assert.Equal(t, c, b)
 }
