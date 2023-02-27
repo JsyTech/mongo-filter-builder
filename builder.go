@@ -1,6 +1,10 @@
 package builder
 
 import (
+	"reflect"
+	"strings"
+
+	"github.com/iancoleman/strcase"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
@@ -40,10 +44,117 @@ func New() *Builder {
 	}
 }
 
+func Auto(val any) *Builder {
+	return New().Auto(val)
+}
+
 // Flush restes the builder to initial state
 func (b *Builder) Flush() *Builder {
 	b.condMaps = []bson.M{}
 	b.curMap = bson.M{}
+	return b
+}
+
+// Auto will construct suitable filter as possible as it can.
+//
+// queryStruct shuold be a stuct contains query fields (with bson tags).
+//
+// If it's a pointer:
+//
+//   - a pointer to a struct:
+//     it will try to dereference it.
+//
+//   - a nil pointer:
+//     do nothing.
+//
+// *Anything else will lead to a panic.
+func (b *Builder) Auto(queryStruct any) *Builder {
+	val := reflect.ValueOf(queryStruct)
+	for val.Kind() == reflect.Pointer {
+		if val.IsNil() {
+			return b
+		}
+		val = val.Elem()
+	}
+	if val.Kind() != reflect.Struct {
+		panic("the given value is not struct")
+	}
+
+	fields := reflect.VisibleFields(val.Type())
+	nonZeroFields := []reflect.StructField{}
+	for i := 0; i < val.NumField(); i++ {
+		for _, _f := range fields {
+			f := val.FieldByName(_f.Name)
+			if f.IsZero() {
+				continue
+			}
+			nonZeroFields = append(nonZeroFields, _f)
+		}
+	}
+
+	for _, _f := range nonZeroFields {
+
+		v := val.FieldByName(_f.Name)
+
+		bsonTag, ok := _f.Tag.Lookup("bson")
+		key, _, found := strings.Cut(bsonTag, ",")
+		if !ok || !found {
+			// use camelcase as default
+			b.AutoWithKey(strcase.ToSnake(_f.Name), v.Interface())
+			continue
+		}
+
+		b.AutoWithKey(key, v.Interface())
+	}
+
+	return b
+}
+
+// AutoWithKey try to add cond with provided key and val.
+//
+// If val is a pointer:
+//
+//	Cond will be built if the val is one of following type and the val is non-zero value:
+//		- array, slice
+//		- bool
+//		- string
+//		- int, int8 and other ints.
+//		- uint, uint8 and other uints.
+//		- float32, float64
+//
+// If val is not a pointer:
+//
+//	Cond will be built if the pointer is not nil.
+func (b *Builder) AutoWithKey(key string, val any) *Builder {
+	_v := reflect.ValueOf(val)
+
+	valFromPointer := _v.Kind() == reflect.Pointer
+	for (_v.Kind() == reflect.Pointer || _v.Kind() == reflect.Interface) && !_v.IsZero() {
+		_v = _v.Elem()
+	}
+
+	switch _v.Kind() {
+	case
+		reflect.Array, reflect.Slice,
+		reflect.Bool,
+		reflect.String,
+		reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64,
+		reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64,
+		reflect.Float32, reflect.Float64:
+	default: // stop if unspported type
+		return b
+	}
+
+	if !valFromPointer && _v.IsZero() { // non-pointer zero value
+		return b
+	}
+	if _v.Kind() == reflect.Slice || _v.Kind() == reflect.Array {
+		if _v.Len() != 0 {
+			b.Any(key).In(val)
+		}
+	} else {
+		b.Any(key).Eq(_v.Interface())
+	}
 	return b
 }
 
@@ -74,8 +185,7 @@ func (b *Builder) Any(key string) *cond {
 	return newCond(key, b)
 }
 
-// Build builds final filter and returns it.
-// Build usually should be only called once for every build since it will call b.Flush() after build up the final map.
+// Build builds final filter and returns it as bson.M.
 func (b *Builder) Build() bson.M {
 	if len(b.curMap) != 0 {
 		b.condMaps = append(b.condMaps, b.curMap)
@@ -85,7 +195,6 @@ func (b *Builder) Build() bson.M {
 		return bson.M{_or: b.condMaps}
 	}
 	res := b.curMap
-	b.Flush()
 	return res
 }
 

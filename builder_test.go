@@ -6,10 +6,11 @@ import (
 	"testing"
 	"time"
 
+	builder "github.com/JsyTech/mongo-filter-builder"
+	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"gopkg.in/go-playground/assert.v1"
 )
 
 var db *mongo.Database
@@ -85,4 +86,74 @@ func mustEqual(t *testing.T, val1, val2 interface{}) {
 	res1, res2 := fetchData(val1), fetchData(val2)
 	// t.Logf("\n%v\n%v\n", res1, res2)
 	assert.Equal(t, reflect.DeepEqual(res1, res2), true)
+}
+
+func TestBuilder_AutoWithKey(t *testing.T) {
+	b := builder.New().AutoWithKey("test_key", 1).Build()
+	c := builder.New().Num("test_key").Eq(1).Build()
+	assert.Equal(t, c, b)
+
+	b = builder.New().AutoWithKey("testKey", 0).Build()
+	c = builder.New().Build()
+	assert.Equal(t, c, b)
+
+	b = builder.New().AutoWithKey("test_key", "123").Build()
+	c = builder.New().Str("test_key").Eq("123").Build()
+	assert.Equal(t, c, b)
+
+	b = builder.New().AutoWithKey("testKey", "").Build()
+	c = builder.New().Build()
+	assert.Equal(t, c, b)
+
+	b = builder.New().AutoWithKey("test_key", "123").Build()
+	c = builder.New().Str("test_key").Eq("123").Build()
+	assert.Equal(t, c, b)
+
+	b = builder.New().AutoWithKey("testKey", "").Build()
+	c = builder.New().Build()
+	assert.Equal(t, c, b)
+
+	b = builder.New().AutoWithKey("test_key", []int{1, 2, 3}).Build()
+	c = builder.New().Num("test_key").In(1, 2, 3).Build()
+	assert.Equal(t, c, b)
+
+	b = builder.New().AutoWithKey("test_key", []int{}).Build()
+	c = builder.New().Build()
+	assert.Equal(t, c, b)
+
+	// pointer val
+	var val = 2
+	var ptr = &val
+
+	b = builder.New().AutoWithKey("test_key", ptr).Build()
+	c = builder.New().Num("test_key").Eq(2).Build()
+	assert.Equal(t, c, b)
+
+	ptr = nil
+	b = builder.New().AutoWithKey("test_key", ptr).Build()
+	c = builder.New().Build()
+	assert.Equal(t, c, b)
+
+}
+
+func TestBuilder_Auto(t *testing.T) {
+	type Query struct {
+		Age    int
+		Name   string
+		FooBar []int
+		Bar    struct { // this kind of struct will be ignored
+			NameBar string
+		}
+	}
+	b := builder.New().Auto(Query{Age: 2}).Build()
+	c := builder.New().Num("age").Eq(2).Build()
+	assert.Equal(t, c, b)
+
+	b = builder.New().Auto(Query{Age: 2, Name: "tester"}).Build()
+	c = builder.New().Num("age").Eq(2).Str("name").Eq("tester").Build()
+	assert.Equal(t, c, b)
+
+	b = builder.New().Auto(Query{FooBar: []int{1, 2, 3}, Bar: struct{ NameBar string }{"21312412"}}).Build()
+	c = builder.New().Num("foo_bar").In(1, 2, 3).Build()
+	assert.Equal(t, c, b)
 }
