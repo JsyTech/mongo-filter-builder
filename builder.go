@@ -44,6 +44,7 @@ func New() *Builder {
 	}
 }
 
+// Auto constructs a new Builder with Builder.Auto method.
 func Auto(val any) *Builder {
 	return New().Auto(val)
 }
@@ -55,9 +56,12 @@ func (b *Builder) Flush() *Builder {
 	return b
 }
 
-// Auto will construct suitable filter as possible as it can.
+// Auto will construct suitable eq filter as possible as it can.
 //
-// queryStruct shuold be a stuct contains query fields (with bson tags).
+// queryStruct shuold be a stuct contains query fields (optionally with bson tags).
+//
+// If bson tag is provided on field, the tag will be used as the key of cond,
+// otherwise snake case of field's name will be used as default.
 //
 // If it's a pointer:
 //
@@ -110,7 +114,7 @@ func (b *Builder) Auto(queryStruct any) *Builder {
 	return b
 }
 
-// AutoWithKey try to add cond with provided key and val.
+// AutoWithKey try to add eq cond with provided key and val.
 //
 // If val is a pointer:
 //
