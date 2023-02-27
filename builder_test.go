@@ -161,6 +161,7 @@ func TestBuilder_Auto(t *testing.T) {
 	q := Query{Bar: &struct{ NameBar string }{"123"}}
 	b = builder.New().Auto(q.Bar).Build()
 	c = builder.New().Num("name_bar").Eq("123").Build()
+	assert.Equal(t, c, b)
 
 	q = Query{
 		Name:    "queryName",
