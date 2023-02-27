@@ -102,6 +102,9 @@ func (b *Builder) Auto(queryStruct any) *Builder {
 
 		bsonTag, ok := _f.Tag.Lookup("bson")
 		key, _, found := strings.Cut(bsonTag, ",")
+		if key == "-" {
+			continue
+		}
 		if !ok || !found {
 			// use camelcase as default
 			b.AutoWithKey(strcase.ToSnake(_f.Name), v.Interface())

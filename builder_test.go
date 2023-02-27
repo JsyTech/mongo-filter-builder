@@ -138,10 +138,11 @@ func TestBuilder_AutoWithKey(t *testing.T) {
 
 func TestBuilder_Auto(t *testing.T) {
 	type Query struct {
-		Age    int
-		Name   string
-		FooBar []int
-		Bar    struct { // this kind of struct will be ignored
+		Age     int
+		Name    string
+		FooBar  []int
+		Ignored any       `bson:"-"`
+		Bar     *struct { // this kind of struct will be ignored if used like Builder.Auto(Query{Bar{...}})
 			NameBar string
 		}
 	}
@@ -153,7 +154,20 @@ func TestBuilder_Auto(t *testing.T) {
 	c = builder.New().Num("age").Eq(2).Str("name").Eq("tester").Build()
 	assert.Equal(t, c, b)
 
-	b = builder.New().Auto(Query{FooBar: []int{1, 2, 3}, Bar: struct{ NameBar string }{"21312412"}}).Build()
+	b = builder.New().Auto(Query{FooBar: []int{1, 2, 3}, Bar: &struct{ NameBar string }{"21312412"}}).Build()
 	c = builder.New().Num("foo_bar").In([]int{1, 2, 3}).Build()
+	assert.Equal(t, c, b)
+
+	q := Query{Bar: &struct{ NameBar string }{"123"}}
+	b = builder.New().Auto(q.Bar).Build()
+	c = builder.New().Num("name_bar").Eq("123").Build()
+
+	q = Query{
+		Name:    "queryName",
+		Ignored: 123,
+	}
+	b = builder.New().Auto(q).Build()
+	c = builder.New().Num("name").Eq("queryName").Build()
+
 	assert.Equal(t, c, b)
 }
