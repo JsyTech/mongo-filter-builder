@@ -205,7 +205,7 @@ func TestBuilder_RemoveCond(t *testing.T) {
 		Or().
 		Str("test_key").Eq("2").
 		Str("test_key_2").Eq("2").
-		RemoveCond("test_key"). // remove test_key
+		RemoveCond("test_key"). // remove test_key with Or conds' preserved
 		Build()
 	c = builder.New().
 		Str("test_key").Eq("1").
