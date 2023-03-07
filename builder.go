@@ -192,19 +192,6 @@ func (b *Builder) Any(key string) *cond {
 	return newCond(key, b)
 }
 
-// Build builds final filter and returns it as bson.M.
-func (b *Builder) Build() bson.M {
-	if len(b.curMap) != 0 {
-		b.condMaps = append(b.condMaps, b.curMap)
-	}
-	if len(b.condMaps) > 1 {
-
-		return bson.M{_or: b.condMaps}
-	}
-	res := b.curMap
-	return res
-}
-
 // Or appends b.curMap to b.condMaps, and b.curMap will be assigned to a new empty map.
 // Thus if finally b.condMaps's len is bigger than 1, then the final filter will wraps all maps into a $or condtion.
 func (b *Builder) Or() *Builder {
@@ -220,4 +207,39 @@ func (b *Builder) Or() *Builder {
 func (b *Builder) AnyMap(key string, m bson.M) *Builder {
 	b.curMap[key] = m
 	return b
+}
+
+// RemoveCond removes given key that has been added to the builder.
+// Elimination will across all conditions if acrossOrCond is given true.
+func (b *Builder) RemoveCond(key string, acrossOrCond ...bool) *Builder {
+	for k := range b.curMap {
+		if k == key {
+			delete(b.curMap, k)
+		}
+	}
+
+	if len(acrossOrCond) != 0 && acrossOrCond[0] {
+		for _, condMap := range b.condMaps {
+			for k := range condMap {
+				if k == key {
+					delete(condMap, k)
+				}
+			}
+		}
+	}
+
+	return b
+}
+
+// Build builds final filter and returns it as bson.M.
+func (b *Builder) Build() bson.M {
+	if len(b.curMap) != 0 {
+		b.condMaps = append(b.condMaps, b.curMap)
+	}
+	if len(b.condMaps) > 1 {
+
+		return bson.M{_or: b.condMaps}
+	}
+	res := b.curMap
+	return res
 }

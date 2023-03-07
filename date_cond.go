@@ -78,7 +78,12 @@ func (c *dateCond) GteStr(val string, format ...string) *Builder {
 	return c.Gte(t)
 }
 
+// Between side-inclusive time range query.
+//
+// * Since this method used to build cond like x_time: {$gte: ..., $lte: ...},
+// it will remove the existing key to do overwirte any existing cond.
 func (c *dateCond) Between(min, max time.Time) *Builder {
+	c.builder.RemoveCond(c.key, false) //
 	c.cond.Gte(min)
 	return c.cond.Lte(max)
 }

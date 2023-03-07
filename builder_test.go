@@ -172,3 +172,47 @@ func TestBuilder_Auto(t *testing.T) {
 
 	assert.Equal(t, c, b)
 }
+
+func TestBuilder_RemoveCond(t *testing.T) {
+	b := builder.New().
+		Str("test_key").Eq("123").
+		Str("test_key_2").Eq("321").
+		RemoveCond("test_key"). // remove test_key
+		Build()
+	c := builder.New().
+		Str("test_key_2").Eq("321").
+		Build()
+	assert.Equal(t, c, b)
+
+	b = builder.New().
+		Str("test_key").Eq("1").
+		Str("test_key_2").Eq("1").
+		Or().
+		Str("test_key").Eq("2").
+		Str("test_key_2").Eq("2").
+		RemoveCond("test_key", true). // remove test_key across Or conds
+		Build()
+	c = builder.New().
+		Str("test_key_2").Eq("1").
+		Or().
+		Str("test_key_2").Eq("2").
+		Build()
+	assert.Equal(t, c, b)
+
+	b = builder.New().
+		Str("test_key").Eq("1").
+		Str("test_key_2").Eq("1").
+		Or().
+		Str("test_key").Eq("2").
+		Str("test_key_2").Eq("2").
+		RemoveCond("test_key"). // remove test_key
+		Build()
+	c = builder.New().
+		Str("test_key").Eq("1").
+		Str("test_key_2").Eq("1").
+		Or().
+		Str("test_key_2").Eq("2").
+		Build()
+	assert.Equal(t, c, b)
+
+}
