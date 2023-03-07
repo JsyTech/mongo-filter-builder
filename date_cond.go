@@ -89,6 +89,14 @@ func (c *dateCond) BetweenStr(min, max string, format ...string) *Builder {
 	return c.Between(minT, maxT)
 }
 
+// RangeStr try to use rg[0], rg[1] as the input of BetweenStr.
+func (c *dateCond) RangeStr(rg []string, format ...string) *Builder {
+	if len(rg) < 2 || rg[0] == "" || rg[1] == "" {
+		return c.builder
+	}
+	return c.BetweenStr(rg[0], rg[1], format...)
+}
+
 // mustParse parses time from string with format.
 func (c *dateCond) mustParse(timeStr string, format ...string) time.Time {
 	f := c.defaultFormat
