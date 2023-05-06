@@ -101,11 +101,11 @@ func (b *Builder) Auto(queryStruct any) *Builder {
 		v := val.FieldByName(_f.Name)
 
 		bsonTag, ok := _f.Tag.Lookup("bson")
-		key, _, found := strings.Cut(bsonTag, ",")
+		key, _, _ := strings.Cut(bsonTag, ",")
 		if key == "-" {
 			continue
 		}
-		if !ok || !found {
+		if !ok || key == "" {
 			// use camelcase as default
 			b.AutoWithKey(strcase.ToSnake(_f.Name), v.Interface())
 			continue

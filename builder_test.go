@@ -145,6 +145,7 @@ func TestBuilder_Auto(t *testing.T) {
 		Bar     *struct { // this kind of struct will be ignored if used like Builder.Auto(Query{Bar{...}})
 			NameBar string
 		}
+		HasKey string `bson:"do_has_key"`
 	}
 	b := builder.New().Auto(Query{Age: 2}).Build()
 	c := builder.New().Num("age").Eq(2).Build()
@@ -160,7 +161,7 @@ func TestBuilder_Auto(t *testing.T) {
 
 	q := Query{Bar: &struct{ NameBar string }{"123"}}
 	b = builder.New().Auto(q.Bar).Build()
-	c = builder.New().Num("name_bar").Eq("123").Build()
+	c = builder.New().Str("name_bar").Eq("123").Build()
 	assert.Equal(t, c, b)
 
 	q = Query{
@@ -168,8 +169,14 @@ func TestBuilder_Auto(t *testing.T) {
 		Ignored: 123,
 	}
 	b = builder.New().Auto(q).Build()
-	c = builder.New().Num("name").Eq("queryName").Build()
+	c = builder.New().Str("name").Eq("queryName").Build()
+	assert.Equal(t, c, b)
 
+	q = Query{
+		HasKey: "123",
+	}
+	b = builder.New().Auto(q).Build()
+	c = builder.New().Str("do_has_key").Eq("123").Build()
 	assert.Equal(t, c, b)
 }
 
