@@ -28,10 +28,10 @@ const (
 
 // Builder represents a filter builder.
 type Builder struct {
-	// condMaps stores all condtion maps.
+	// condMaps stores all condition maps.
 	condMaps []bson.M
-	// curMap represents the currently operated condtion map.
-	// A condtion map can be a single element map also can be a multiple elements map.
+	// curMap represents the currently operated condition map.
+	// A condition map can be a single element map also can be a multiple elements map.
 	curMap bson.M
 }
 
@@ -58,7 +58,7 @@ func (b *Builder) Flush() *Builder {
 
 // Auto will construct suitable eq filter as possible as it can.
 //
-// queryStruct shuold be a stuct contains query fields (optionally with bson tags).
+// queryStruct should be a struct contains query fields (optionally with bson tags).
 //
 // If bson tag is provided on field, the tag will be used as the key of cond,
 // otherwise snake case of field's name will be used as default.
@@ -86,14 +86,12 @@ func (b *Builder) Auto(queryStruct any) *Builder {
 
 	fields := reflect.VisibleFields(val.Type())
 	nonZeroFields := []reflect.StructField{}
-	for i := 0; i < val.NumField(); i++ {
-		for _, _f := range fields {
-			f := val.FieldByName(_f.Name)
-			if f.IsZero() {
-				continue
-			}
-			nonZeroFields = append(nonZeroFields, _f)
+	for _, _f := range fields {
+		f := val.FieldByName(_f.Name)
+		if f.IsZero() {
+			continue
 		}
+		nonZeroFields = append(nonZeroFields, _f)
 	}
 
 	for _, _f := range nonZeroFields {
@@ -106,7 +104,7 @@ func (b *Builder) Auto(queryStruct any) *Builder {
 			continue
 		}
 		if !ok || key == "" {
-			// use camelcase as default
+			// use camel case as default
 			b.AutoWithKey(strcase.ToSnake(_f.Name), v.Interface())
 			continue
 		}
@@ -148,7 +146,7 @@ func (b *Builder) AutoWithKey(key string, val any) *Builder {
 		reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64,
 		reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64,
 		reflect.Float32, reflect.Float64:
-	default: // stop if unspported type
+	default: // stop if unsupported type
 		return b
 	}
 
@@ -165,12 +163,12 @@ func (b *Builder) AutoWithKey(key string, val any) *Builder {
 	return b
 }
 
-// WantNum indicates the builder to build a condtion for string type.
+// WantNum indicates the builder to build a condition for string type.
 func (b *Builder) Str(key string) *strCond {
 	return newStrCond(key, b)
 }
 
-// Num indicates the builder to build a condtion for number type.
+// Num indicates the builder to build a condition for number type.
 func (b *Builder) Num(key string) *numCond {
 	return newNumCond(key, b)
 }
@@ -193,7 +191,7 @@ func (b *Builder) Any(key string) *cond {
 }
 
 // Or appends b.curMap to b.condMaps, and b.curMap will be assigned to a new empty map.
-// Thus if finally b.condMaps's len is bigger than 1, then the final filter will wraps all maps into a $or condtion.
+// Thus if finally b.condMaps's len is bigger than 1, then the final filter will wraps all maps into a $or condition.
 func (b *Builder) Or() *Builder {
 	if len(b.curMap) == 0 {
 		return b
